@@ -1,0 +1,84 @@
+{
+  "theme": "dark",
+  "archetype": "The Performance Pro",
+  "colors": {
+    "background": "#0A0A0A",
+    "surface": "#141414",
+    "surface_hover": "#1F1F1F",
+    "primary": "#00A3FF",
+    "primary_hover": "#33B5FF",
+    "secondary": "#FF3B30",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#A1A1AA",
+    "border": "#27272A",
+    "chart_lines": [
+      "#00A3FF",
+      "#FF3B30",
+      "#00FF88"
+    ],
+    "map_route_line": "#00A3FF"
+  },
+  "typography": {
+    "heading_font": "Bebas Neue",
+    "body_font": "Manrope",
+    "scale": {
+      "h1": "text-5xl sm:text-6xl tracking-tight uppercase",
+      "h2": "text-3xl sm:text-4xl tracking-tight uppercase",
+      "h3": "text-2xl uppercase",
+      "h4": "text-xl",
+      "body": "text-base",
+      "small": "text-sm",
+      "metric_value": "text-5xl sm:text-6xl font-black tracking-tighter font-sans",
+      "metric_label": "text-xs tracking-[0.2em] uppercase text-zinc-400"
+    }
+  },
+  "spacing": {
+    "container_padding": "p-6 md:p-8",
+    "section_gap": "gap-8 md:gap-12",
+    "grid_gap": "gap-4 md:gap-6"
+  },
+  "layout": {
+    "strategy": "The 'Control Room' Grid",
+    "description": "Dense, data-focused. Every pixel utilized. Sharp edges, minimal soft shadows.",
+    "border_radius": "rounded-none md:rounded-md",
+    "borders": "1px solid border-zinc-800"
+  },
+  "components": {
+    "buttons": "Sharp edges, flat backgrounds, primary color for main CTA. On hover: lighter hue. data-testid required.",
+    "cards": "Flat background (#141414), 1px subtle border (#27272A), no shadow. On hover: slight lift, border color darkens.",
+    "header": "Solid Background (#0A0A0A) with hard bottom border. Sticky top z-50.",
+    "map": "Interactive map container should take full width/height of its grid area. Use dark tile layer. Route should be a vibrant neon color (Volt Blue).",
+    "charts": "Shadcn/Recharts for elevation and pace. Remove grid lines for a cleaner look. Use vibrant primary colors for chart lines with a subtle gradient fill below.",
+    "navigation": "Top navigation or side rail. Must have visible navigation bar, logo + links + CTA. Mobile uses hamburger menu."
+  },
+  "motion": {
+    "hover": "Subtle background color shifts and border highlights.",
+    "page_transition": "Simple fade-in.",
+    "metrics_load": "Number counter animation or staggered fade-in for data points."
+  },
+  "media": {
+    "images": [
+      {
+        "category": "hero_background",
+        "url": "https://images.unsplash.com/photo-1774646598677-cc38cb3cac00?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMHRvcG9ncmFwaGljYWwlMjBtYXAlMjBkYXJrfGVufDB8fHx8MTc3NTM0NjY1M3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract blue topographic map with glowing lines, ideal for landing page hero or empty map state background."
+      },
+      {
+        "category": "runner_lifestyle",
+        "url": "https://images.unsplash.com/photo-1775225218390-34a8c5135110?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHxydW5uZXIlMjBkYXJrJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3NzUzNDY2NTN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Person running on a path through a forest. Good for profile header, auth screen background, or run history empty state."
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Install Bebas Neue and Manrope from Google Fonts in the layout or index file.",
+    "Install Phosphor Icons (yarn add @phosphor-icons/react) for sharp, modern icons.",
+    "Implement an interactive map (e.g., using react-leaflet, leaflet) for the Route Planner and Live GPS Tracking.",
+    "Map tile layer MUST be dark themed (e.g., CartoDB Dark Matter or similar).",
+    "Build the Run History Dashboard using the 'Control Room' grid pattern: tight gaps, dense data, high contrast metrics.",
+    "Ensure all interactive elements have 'data-testid' attributes.",
+    "Do NOT use soft shadows (Neumorphism) everywhere; prefer sharp 1px borders and flat surfaces for the 'Tactical Minimalism' athletic look.",
+    "Build a Run Detail View with a replayable map, splits table, and elevation chart (using Recharts).",
+    "Metric values MUST use massive typography (text-5xl font-black tracking-tighter) with small uppercase labels (text-xs tracking-[0.2em])."
+  ]
+}
