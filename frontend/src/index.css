@@ -1,26 +1,72 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  text-rendering: optimizeLegibility;
+  --bg: #0A0A0A;
+  --surface: #141414;
+  --surface-hover: #1F1F1F;
+  --primary: #00A3FF;
+  --primary-hover: #33B5FF;
+  --secondary: #FF3B30;
+  --text: #FFFFFF;
+  --text-secondary: #A1A1AA;
+  --border: #27272A;
+  --green: #00FF88;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+h1, h2, h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
+.leaflet-container {
+  background: #0A0A0A !important;
+  width: 100%;
+  height: 100%;
 }
 
-button:focus,
-button:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+.leaflet-control-zoom a {
+  background: #141414 !important;
+  color: #fff !important;
+  border-color: #27272A !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(10, 10, 10, 0.8) !important;
+  color: #A1A1AA !important;
+  font-size: 10px !important;
+}
+.leaflet-control-attribution a {
+  color: #00A3FF !important;
+}
+
+input, select {
+  font-family: 'Manrope', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
 }

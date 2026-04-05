@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -11,9 +12,17 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.31.5",
+    "@phosphor-icons/react": "^2.1.10",
+    "@tailwindcss/vite": "^4.2.2",
+    "axios": "^1.14.0",
+    "leaflet": "^1.9.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^6.30.1"
+    "react-is": "18.3.1",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^6.30.1",
+    "recharts": "2.15.3",
+    "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

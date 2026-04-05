@@ -1,22 +1,54 @@
-import ClerkProviderWithRoutes from "./auth/ClerkProviderWithRoutes.jsx"
-import {Routes, Route} from "react-router-dom"
-import {Layout} from "./layout/Layout.jsx"
-import {ChallengeGenerator} from "./challenge/ChallengeGenerator.jsx";
-import {HistoryPanel} from "./history/HistoryPanel.jsx";
-import {AuthenticationPage} from "./auth/AuthenticationPage.jsx";
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import Header from './components/Header';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import RoutePlanner from './pages/RoutePlanner';
+import LiveTracking from './pages/LiveTracking';
+import RunDetail from './pages/RunDetail';
+import Profile from './pages/Profile';
+import AuthCallback from './pages/AuthCallback';
+import './index.css';
 
-function App() {
-    return <ClerkProviderWithRoutes>
-        <Routes>
-            <Route path="/sign-in/*" element={<AuthenticationPage />} />
-            <Route path="/sign-up" element={<AuthenticationPage />} />
-            <Route element={<Layout />}>
-                <Route path="/" element={<ChallengeGenerator />}/>
-                <Route path="/history" element={<HistoryPanel />}/>
-            </Route>
-        </Routes>
-    </ClerkProviderWithRoutes>
+function AppContent() {
+  const location = useLocation();
+
+  // Check URL fragment for session_id synchronously during render
+  if (location.hash?.includes('session_id=')) {
+    return <AuthCallback />;
+  }
+
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+
+  return (
+    <>
+      {!isAuthPage && (
+        <ProtectedRoute>
+          <Header />
+        </ProtectedRoute>
+      )}
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/planner" element={<ProtectedRoute><RoutePlanner /></ProtectedRoute>} />
+        <Route path="/tracking" element={<ProtectedRoute><LiveTracking /></ProtectedRoute>} />
+        <Route path="/runs/:runId" element={<ProtectedRoute><RunDetail /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
