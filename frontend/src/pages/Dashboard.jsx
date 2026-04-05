@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
-import { Path, Timer, Lightning, Mountains, Fire, TrendUp, MapPin, Trash, Calendar } from '@phosphor-icons/react';
+import { Path, Timer, Lightning, Mountains, Fire, TrendUp, MapPin, Trash, Calendar, Trophy, Medal } from '@phosphor-icons/react';
 
 const API = import.meta.env.VITE_BACKEND_URL;
 
@@ -46,17 +46,20 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [runs, setRuns] = useState([]);
   const [stats, setStats] = useState(null);
+  const [records, setRecords] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [runsRes, statsRes] = await Promise.all([
+        const [runsRes, statsRes, recordsRes] = await Promise.all([
           axios.get(`${API}/api/runs`, { withCredentials: true }),
           axios.get(`${API}/api/runs/stats`, { withCredentials: true }),
+          axios.get(`${API}/api/records`, { withCredentials: true }),
         ]);
         setRuns(runsRes.data);
         setStats(statsRes.data);
+        setRecords(recordsRes.data);
       } catch (err) {
         console.error('Failed to load data', err);
       } finally {
@@ -124,6 +127,62 @@ export default function Dashboard() {
           <MetricCard icon={Mountains} label="Elevation" value={stats.total_elevation.toFixed(0)} unit="m" color="#A1A1AA" />
           <MetricCard icon={Path} label="Longest Run" value={stats.longest_run.toFixed(1)} unit="km" />
           <MetricCard icon={Path} label="Avg Distance" value={stats.avg_distance.toFixed(1)} unit="km" color="#00FF88" />
+        </div>
+      )}
+
+      {/* Personal Records */}
+      {records && (
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Trophy size={28} weight="fill" style={{ color: '#FFD700' }} />
+            <h2 className="text-3xl" style={{ fontFamily: 'Bebas Neue', color: '#fff' }}>Personal Records</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {Object.entries(records).map(([key, rec]) => {
+              const hasRecord = rec.time !== null;
+              const labelMap = { '1km': '1 KM', '5km': '5 KM', '10km': '10 KM', 'semi': 'Semi', 'marathon': 'Marathon' };
+              return (
+                <div
+                  key={key}
+                  data-testid={`record-${key}`}
+                  className="p-4 border relative overflow-hidden transition-all"
+                  style={{
+                    background: hasRecord ? '#141414' : '#0f0f0f',
+                    borderColor: hasRecord ? '#FFD700' : '#27272A',
+                    borderRadius: '4px',
+                    borderWidth: hasRecord ? '1px' : '1px',
+                  }}
+                >
+                  {hasRecord && (
+                    <div className="absolute top-0 right-0 w-16 h-16 opacity-5">
+                      <Trophy size={64} weight="fill" style={{ color: '#FFD700' }} />
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2 mb-2">
+                    <Medal size={16} weight={hasRecord ? 'fill' : 'regular'} style={{ color: hasRecord ? '#FFD700' : '#27272A' }} />
+                    <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#A1A1AA' }}>
+                      {labelMap[key] || key}
+                    </span>
+                  </div>
+                  {hasRecord ? (
+                    <>
+                      <p className="text-3xl font-black tracking-tighter" style={{ color: '#fff' }}>
+                        {formatDuration(rec.time)}
+                      </p>
+                      <p className="text-sm mt-1" style={{ color: '#00FF88' }}>
+                        {formatPace(rec.pace)} min/km
+                      </p>
+                      {rec.run_name && (
+                        <p className="text-xs mt-2 truncate" style={{ color: '#A1A1AA' }}>{rec.run_name}</p>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-2xl font-black tracking-tighter" style={{ color: '#27272A' }}>--:--</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 

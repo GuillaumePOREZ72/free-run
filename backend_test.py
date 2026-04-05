@@ -180,6 +180,41 @@ class RunTrackerAPITester:
         
         return self.run_test("Update Profile", "PUT", "api/profile", 200, data=data)
 
+    def test_get_records(self):
+        """Test getting personal records"""
+        return self.run_test("Get Personal Records", "GET", "api/records", 200)
+
+    def test_get_record_history(self):
+        """Test getting record history"""
+        return self.run_test("Get Record History", "GET", "api/records/history", 200)
+
+    def test_create_run_with_record_check(self, name, points, distance, duration, expected_new_records=0):
+        """Test run creation and check for new records"""
+        success, response = self.run_test(
+            f"Create Run (Record Check) - {name}",
+            "POST",
+            "api/runs",
+            200,
+            data={
+                "name": name,
+                "points": points,
+                "distance": distance,
+                "duration": duration,
+                "elevation_gain": 50,
+                "elevation_loss": 45,
+                "calories": 300
+            }
+        )
+        
+        if success and 'new_records' in response:
+            actual_records = len(response['new_records'])
+            if actual_records == expected_new_records:
+                self.log_test(f"Record Detection - {name}", True, f"Expected {expected_new_records} records, got {actual_records}")
+            else:
+                self.log_test(f"Record Detection - {name}", False, f"Expected {expected_new_records} records, got {actual_records}")
+        
+        return success, response
+
 def main():
     print("🚀 Starting RunTracker API Tests")
     print("=" * 50)
@@ -246,6 +281,48 @@ def main():
         
         # Test with seeded run
         tester.test_get_run("run_5a7612eee269")
+        
+        print("\n🏆 Personal Records Tests")
+        # Test getting records (should show all 5 categories)
+        records_success, records_response = tester.test_get_records()
+        if records_success:
+            # Verify all 5 categories are present
+            expected_categories = ['1km', '5km', '10km', 'semi', 'marathon']
+            found_categories = list(records_response.keys()) if records_response else []
+            if set(expected_categories) == set(found_categories):
+                tester.log_test("Records Categories Complete", True, f"All 5 categories present: {found_categories}")
+            else:
+                tester.log_test("Records Categories Complete", False, f"Expected {expected_categories}, got {found_categories}")
+        
+        # Test record history
+        tester.test_get_record_history()
+        
+        # Test creating runs that should break records
+        print("\n🏃 Record Breaking Tests")
+        
+        # Fast 1km run (should break 1km record if current is 265s)
+        fast_1km_points = [
+            {"lat": 40.7128, "lng": -74.0060},
+            {"lat": 40.7138, "lng": -74.0060}  # ~1km distance
+        ]
+        tester.test_create_run_with_record_check("Fast 1km Run", fast_1km_points, 1.0, 240, expected_new_records=1)
+        
+        # Slow 5km run (should NOT break any records)
+        slow_5km_points = [
+            {"lat": 40.7128, "lng": -74.0060},
+            {"lat": 40.7128, "lng": -74.0010},
+            {"lat": 40.7178, "lng": -74.0010},
+            {"lat": 40.7178, "lng": -74.0060},
+            {"lat": 40.7128, "lng": -74.0060}  # ~5km loop
+        ]
+        tester.test_create_run_with_record_check("Slow 5km Run", slow_5km_points, 5.0, 2000, expected_new_records=0)
+        
+        # Fast 10km run (should break 10km record and potentially others)
+        fast_10km_points = [
+            {"lat": 40.7128, "lng": -74.0060},
+            {"lat": 40.7228, "lng": -74.0060}  # ~10km distance
+        ]
+        tester.test_create_run_with_record_check("Fast 10km Run", fast_10km_points, 10.0, 2400, expected_new_records=2)
         
         print("\n🗑️ Cleanup Tests")
         # Delete created items

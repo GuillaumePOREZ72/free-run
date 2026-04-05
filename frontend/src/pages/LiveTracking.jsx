@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Polyline, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import axios from 'axios';
-import { Play, Pause, Stop, Timer, Path, Lightning, Mountains, Fire } from '@phosphor-icons/react';
+import { Play, Pause, Stop, Timer, Path, Lightning, Mountains, Fire, Trophy } from '@phosphor-icons/react';
 import 'leaflet/dist/leaflet.css';
 
 const API = import.meta.env.VITE_BACKEND_URL;
@@ -58,6 +58,7 @@ export default function LiveTracking() {
   const [splits, setSplits] = useState([]);
   const [name, setName] = useState('');
   const [saving, setSaving] = useState(false);
+  const [newRecords, setNewRecords] = useState([]);
   const [locating, setLocating] = useState(true);
 
   const watchRef = useRef(null);
@@ -201,7 +202,7 @@ export default function LiveTracking() {
     if (points.length < 2 || !name.trim()) return;
     setSaving(true);
     try {
-      await axios.post(`${API}/api/runs`, {
+      const res = await axios.post(`${API}/api/runs`, {
         name: name.trim(),
         points,
         distance: parseFloat(distance.toFixed(3)),
@@ -210,7 +211,13 @@ export default function LiveTracking() {
         elevation_loss: elevationLoss,
         splits,
       }, { withCredentials: true });
-      navigate('/dashboard');
+      if (res.data.new_records && res.data.new_records.length > 0) {
+        setNewRecords(res.data.new_records);
+        // Auto-navigate after showing records
+        setTimeout(() => navigate('/dashboard'), 4000);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       console.error('Failed to save run', err);
     } finally {
@@ -244,6 +251,53 @@ export default function LiveTracking() {
 
   return (
     <div data-testid="tracking-page" className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+      {/* New Record Celebration Overlay */}
+      {newRecords.length > 0 && (
+        <div
+          data-testid="new-record-overlay"
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
+        >
+          <div className="text-center p-8 max-w-md" style={{ animation: 'fadeInScale 0.5s ease-out' }}>
+            <Trophy size={80} weight="fill" style={{ color: '#FFD700' }} className="mx-auto mb-4" />
+            <h2 className="text-5xl mb-2" style={{ fontFamily: 'Bebas Neue', color: '#FFD700' }}>
+              New Record{newRecords.length > 1 ? 's' : ''}!
+            </h2>
+            <div className="space-y-3 mt-6">
+              {newRecords.map((rec, i) => {
+                const labelMap = { '1km': '1 KM', '5km': '5 KM', '10km': '10 KM', 'semi': 'Semi-Marathon', 'marathon': 'Marathon' };
+                return (
+                  <div key={i} className="p-4 border" style={{ background: '#141414', borderColor: '#FFD700', borderRadius: '4px' }}>
+                    <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: '#FFD700' }}>
+                      {labelMap[rec.category] || rec.category}
+                    </p>
+                    <p className="text-3xl font-black tracking-tighter" style={{ color: '#fff' }}>
+                      {formatDuration(rec.time)}
+                    </p>
+                    <p className="text-sm" style={{ color: '#00FF88' }}>
+                      {formatPace(rec.pace)} min/km
+                    </p>
+                    {rec.improvement && (
+                      <p className="text-sm mt-1" style={{ color: '#00FF88' }}>
+                        -{rec.improvement}s improvement!
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <button
+              data-testid="dismiss-records-btn"
+              onClick={() => navigate('/dashboard')}
+              className="mt-6 px-8 py-3 text-sm font-bold uppercase tracking-wider border-none cursor-pointer"
+              style={{ background: '#FFD700', color: '#0A0A0A', borderRadius: '4px' }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
       <h1 className="text-4xl md:text-5xl mb-6" style={{ fontFamily: 'Bebas Neue', color: '#fff' }}>
         {status === 'running' ? 'Running...' : status === 'paused' ? 'Paused' : 'Live Tracking'}
       </h1>
