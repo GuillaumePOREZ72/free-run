@@ -35,6 +35,7 @@ Application type Strava gratuite permettant de planifier des parcours de course 
 - Profile page with weight/height
 - Admin seeding + brute force protection
 - Dark theme applied throughout
+- **Personal Records system**: Auto-detects records for 1km, 5km, 10km, semi-marathon, marathon after each run. Dashboard displays records with gold trophy icons. Celebration overlay on new records. Improvement delta shown when beating previous records.
 
 ## Testing Status
 - Backend: 100% passed
@@ -47,6 +48,7 @@ Application type Strava gratuite permettant de planifier des parcours de course 
 - Import GPX files from other apps
 - Weekly/monthly statistics charts
 - Route suggestions based on saved routes
+- Records timeline / progression graph
 
 ### P2
 - Interval training mode
