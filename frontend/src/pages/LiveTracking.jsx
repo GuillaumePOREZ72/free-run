@@ -60,6 +60,7 @@ export default function LiveTracking() {
   const [saving, setSaving] = useState(false);
   const [newRecords, setNewRecords] = useState([]);
   const [locating, setLocating] = useState(true);
+  const [geoError, setGeoError] = useState(null); // 1=PERMISSION_DENIED 2=UNAVAILABLE 3=TIMEOUT
 
   const watchRef = useRef(null);
   const timerRef = useRef(null);
@@ -70,21 +71,31 @@ export default function LiveTracking() {
   const pointsRef = useRef([]);
 
   // Get initial location
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const c = [pos.coords.latitude, pos.coords.longitude];
-          setCenter(c);
-          setCurrentPos(c);
-          setLocating(false);
-        },
-        () => setLocating(false),
-        { enableHighAccuracy: true }
-      );
-    } else {
+  const requestLocation = () => {
+    setLocating(true);
+    setGeoError(null);
+    if (!navigator.geolocation) {
+      setGeoError(2);
       setLocating(false);
+      return;
     }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const c = [pos.coords.latitude, pos.coords.longitude];
+        setCenter(c);
+        setCurrentPos(c);
+        setLocating(false);
+      },
+      (err) => {
+        setGeoError(err.code);
+        setLocating(false);
+      },
+      { enableHighAccuracy: false, timeout: 10000 }
+    );
+  };
+
+  useEffect(() => {
+    requestLocation();
   }, []);
 
   const startTracking = () => {
@@ -143,7 +154,9 @@ export default function LiveTracking() {
           return updated;
         });
       },
-      (err) => console.error('Geo error:', err),
+      (err) => {
+        console.error('Geo watch error:', err.code, err.message);
+      },
       { enableHighAccuracy: true, maximumAge: 2000, timeout: 10000 }
     );
   };
@@ -185,7 +198,9 @@ export default function LiveTracking() {
           return updated;
         });
       },
-      null,
+      (err) => {
+        console.error('Geo watch error:', err.code, err.message);
+      },
       { enableHighAccuracy: true, maximumAge: 2000, timeout: 10000 }
     );
   };
@@ -249,8 +264,41 @@ export default function LiveTracking() {
     );
   }
 
+  if (geoError) {
+    const messages = {
+      1: {
+        title: 'Location access denied',
+        detail: 'Open the padlock icon in your browser address bar, set Location to "Allow", then retry.',
+      },
+      2: {
+        title: 'Location unavailable',
+        detail: 'Your device could not determine your position. Check that location services are enabled.',
+      },
+      3: {
+        title: 'Location request timed out',
+        detail: 'It took too long to get your position. Make sure you have a GPS or network signal.',
+      },
+    };
+    const msg = messages[geoError] || { title: 'Location error', detail: 'An unknown error occurred.' };
+    return (
+      <div className="flex items-center justify-center py-20 px-4">
+        <div className="text-center max-w-sm w-full p-6 border" style={{ background: '#141414', borderColor: '#FF3B30', borderRadius: '4px' }}>
+          <p className="text-3xl mb-1" style={{ fontFamily: 'Bebas Neue', color: '#FF3B30' }}>{msg.title}</p>
+          <p className="text-sm mb-6" style={{ color: '#A1A1AA' }}>{msg.detail}</p>
+          <button
+            onClick={requestLocation}
+            className="w-full px-4 py-3 text-sm font-bold uppercase tracking-wider border-none cursor-pointer"
+            style={{ background: '#00A3FF', color: '#0A0A0A', borderRadius: '4px' }}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div data-testid="tracking-page" className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+    <div data-testid="tracking-page" className="w-full px-4 py-6">
       {/* New Record Celebration Overlay */}
       {newRecords.length > 0 && (
         <div
@@ -302,7 +350,7 @@ export default function LiveTracking() {
         {status === 'running' ? 'Running...' : status === 'paused' ? 'Paused' : 'Live Tracking'}
       </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1  gap-4">
         {/* Metrics Panel */}
         <div className="lg:col-span-1 space-y-4">
           {/* Big metrics */}
@@ -426,7 +474,7 @@ export default function LiveTracking() {
         </div>
 
         {/* Map */}
-        <div className="lg:col-span-3 border overflow-hidden" style={{ borderColor: '#27272A', borderRadius: '4px', height: '600px' }}>
+        <div className="lg:col-span-3 border overflow-hidden" style={{ borderColor: '#27272A', borderRadius: '4px', height: '450px' }}>
           <MapContainer center={center} zoom={16} style={{ width: '100%', height: '100%' }}>
             <TileLayer
               url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"

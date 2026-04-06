@@ -41,7 +41,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#0A0A0A' }}>
+    <div className="w-full min-h-screen flex items-center justify-center px-4" style={{ background: '#0A0A0A' }}>
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 mb-4">
@@ -66,13 +66,13 @@ export default function Login() {
             <div className="mb-4">
               <label className="block text-xs font-semibold mb-2 uppercase tracking-widest" style={{ color: '#A1A1AA' }}>Email</label>
               <div className="relative">
-                <EnvelopeSimple size={18} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#A1A1AA' }} />
+                <EnvelopeSimple size={18} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: '#A1A1AA' }} />
                 <input
                   data-testid="login-email-input"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
+                  className="w-full pl-14 pr-4 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
                   style={{ background: '#0A0A0A', borderColor: '#27272A', color: '#fff', borderRadius: '4px' }}
                   placeholder="you@email.com"
                   required
@@ -83,13 +83,13 @@ export default function Login() {
             <div className="mb-6">
               <label className="block text-xs font-semibold mb-2 uppercase tracking-widest" style={{ color: '#A1A1AA' }}>Password</label>
               <div className="relative">
-                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#A1A1AA' }} />
+                <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: '#A1A1AA' }} />
                 <input
                   data-testid="login-password-input"
                   type={showPw ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-12 pr-12 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
+                  className="w-full pl-14 pr-14 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
                   style={{ background: '#0A0A0A', borderColor: '#27272A', color: '#fff', borderRadius: '4px' }}
                   placeholder="Enter password"
                   required
@@ -97,7 +97,7 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPw(!showPw)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
                   style={{ background: 'none', border: 'none', color: '#A1A1AA' }}
                 >
                   {showPw ? <EyeSlash size={18} /> : <Eye size={18} />}

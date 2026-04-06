@@ -91,7 +91,7 @@ export default function RunDetail() {
     .map((p, i) => ({ index: i, elevation: Math.round(p.alt) }));
 
   return (
-    <div data-testid="run-detail-page" className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+    <div data-testid="run-detail-page" className="w-full px-4 py-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
           <Link
@@ -118,7 +118,7 @@ export default function RunDetail() {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2  gap-3 mb-6">
         <div className="p-4 border" style={{ background: '#141414', borderColor: '#27272A', borderRadius: '4px' }}>
           <div className="flex items-center gap-2 mb-2">
             <Path size={16} weight="bold" style={{ color: '#00A3FF' }} />
@@ -192,7 +192,7 @@ export default function RunDetail() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1  gap-4">
         {/* Elevation Chart */}
         {elevationData.length > 0 && (
           <div className="p-4 border" style={{ background: '#141414', borderColor: '#27272A', borderRadius: '4px' }}>

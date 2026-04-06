@@ -23,7 +23,7 @@ function AppContent() {
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   return (
-    <>
+    <div className="w-full min-h-screen flex flex-col bg-[#0A0A0A] relative md:border-x md:border-[#27272A] shadow-2xl">
       {!isAuthPage && (
         <ProtectedRoute>
           <Header />
@@ -39,7 +39,7 @@ function AppContent() {
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

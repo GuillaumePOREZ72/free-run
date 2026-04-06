@@ -30,7 +30,7 @@ export default function Profile() {
   };
 
   return (
-    <div data-testid="profile-page" className="max-w-2xl mx-auto px-4 md:px-8 py-6">
+    <div data-testid="profile-page" className="px-4 py-6">
       <h1 className="text-4xl md:text-5xl mb-6" style={{ fontFamily: 'Bebas Neue', color: '#fff' }}>Profile</h1>
 
       <div className="p-6 border" style={{ background: '#141414', borderColor: '#27272A', borderRadius: '4px' }}>

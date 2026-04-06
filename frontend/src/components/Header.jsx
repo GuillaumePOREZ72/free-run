@@ -25,7 +25,7 @@ export default function Header() {
 
   return (
     <header data-testid="app-header" className="sticky top-0 z-50 border-b" style={{ background: '#0A0A0A', borderColor: '#27272A' }}>
-      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+      <div className="w-full px-4 h-16 flex items-center justify-between">
         <Link to="/dashboard" className="flex items-center gap-2 no-underline" data-testid="logo-link">
           <div className="w-8 h-8 rounded-sm flex items-center justify-center" style={{ background: '#00A3FF' }}>
             <Path size={20} weight="bold" color="#0A0A0A" />
@@ -35,7 +35,7 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1" data-testid="desktop-nav">
+        <nav className="hidden gap-1" data-testid="desktop-nav">
           {navLinks.map(({ to, label, icon: Icon }) => (
             <Link
               key={to}
@@ -54,7 +54,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden gap-3">
           <span className="text-sm" style={{ color: '#A1A1AA' }}>{user?.name || user?.email}</span>
           <button
             onClick={handleLogout}
@@ -68,7 +68,7 @@ export default function Header() {
         </div>
 
         <button
-          className="md:hidden p-2 cursor-pointer"
+          className=" p-2 cursor-pointer"
           style={{ background: 'transparent', border: 'none', color: '#fff' }}
           onClick={() => setMenuOpen(!menuOpen)}
           data-testid="mobile-menu-toggle"
@@ -78,7 +78,7 @@ export default function Header() {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden border-t px-4 py-3" style={{ background: '#141414', borderColor: '#27272A' }}>
+        <div className=" border-t px-4 py-3" style={{ background: '#141414', borderColor: '#27272A' }}>
           {navLinks.map(({ to, label, icon: Icon }) => (
             <Link
               key={to}

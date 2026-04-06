@@ -88,7 +88,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div data-testid="dashboard-page" className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+    <div data-testid="dashboard-page" className="w-full px-4 py-6">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-4xl md:text-5xl" style={{ fontFamily: 'Bebas Neue', color: '#fff' }}>
@@ -118,7 +118,7 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
+        <div className="grid grid-cols-2  gap-3 md:gap-4 mb-8">
           <MetricCard icon={Path} label="Total Distance" value={stats.total_distance.toFixed(1)} unit="km" />
           <MetricCard icon={Timer} label="Total Time" value={formatDuration(stats.total_duration)} color="#00FF88" />
           <MetricCard icon={Lightning} label="Total Runs" value={stats.total_runs} color="#00A3FF" />
@@ -137,7 +137,7 @@ export default function Dashboard() {
             <Trophy size={28} weight="fill" style={{ color: '#FFD700' }} />
             <h2 className="text-3xl" style={{ fontFamily: 'Bebas Neue', color: '#fff' }}>Personal Records</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2  gap-3">
             {Object.entries(records).map(([key, rec]) => {
               const hasRecord = rec.time !== null;
               const labelMap = { '1km': '1 KM', '5km': '5 KM', '10km': '10 KM', 'semi': 'Semi', 'marathon': 'Marathon' };
@@ -220,19 +220,11 @@ export default function Dashboard() {
                     <div className="flex items-center gap-1 mt-0.5">
                       <Calendar size={12} style={{ color: '#A1A1AA' }} />
                       <span className="text-xs" style={{ color: '#A1A1AA' }}>{formatDate(run.created_at)}</span>
+                      <span className="text-xs ml-2 font-bold" style={{ color: '#fff' }}>{run.distance.toFixed(2)} km</span>
+                      <span className="text-xs ml-2" style={{ color: '#00FF88' }}>{formatDuration(run.duration)}</span>
                     </div>
                   </div>
-                  <div className="hidden md:flex items-center gap-6 text-right">
-                    <div>
-                      <p className="text-lg font-bold" style={{ color: '#fff' }}>{run.distance.toFixed(2)} <span className="text-xs font-normal" style={{ color: '#A1A1AA' }}>km</span></p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold" style={{ color: '#fff' }}>{formatDuration(run.duration)}</p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold" style={{ color: '#00FF88' }}>{formatPace(run.avg_pace)} <span className="text-xs font-normal" style={{ color: '#A1A1AA' }}>min/km</span></p>
-                    </div>
-                  </div>
+                  
                 </Link>
                 <button
                   data-testid={`delete-run-${run.run_id}`}

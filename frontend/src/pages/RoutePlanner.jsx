@@ -115,12 +115,12 @@ export default function RoutePlanner() {
   }
 
   return (
-    <div data-testid="planner-page" className="max-w-7xl mx-auto px-4 md:px-8 py-6">
+    <div data-testid="planner-page" className="w-full px-4 py-6">
       <h1 className="text-4xl md:text-5xl mb-6" style={{ fontFamily: 'Bebas Neue', color: '#fff' }}>Route Planner</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1  gap-4">
         {/* Sidebar */}
-        <div className="lg:col-span-1 space-y-4">
+        <div className=" space-y-4">
           <div className="p-4 border" style={{ background: '#141414', borderColor: '#27272A', borderRadius: '4px' }}>
             <label className="block text-xs font-semibold mb-2 uppercase tracking-widest" style={{ color: '#A1A1AA' }}>Route Name</label>
             <input
@@ -189,7 +189,7 @@ export default function RoutePlanner() {
         </div>
 
         {/* Map */}
-        <div className="lg:col-span-3 border overflow-hidden" style={{ borderColor: '#27272A', borderRadius: '4px', height: '600px' }}>
+        <div className=" border overflow-hidden" style={{ borderColor: '#27272A', borderRadius: '4px', height: '450px' }}>
           <MapContainer center={center} zoom={15} style={{ width: '100%', height: '100%' }} zoomControl={true}>
             <TileLayer
               url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
