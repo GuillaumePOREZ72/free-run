@@ -111,7 +111,7 @@ export default function Register() {
                   type={showPw ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-12 pr-10 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
+                  className="w-full pl-12 pr-12 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
                   style={{ background: '#0A0A0A', borderColor: '#27272A', color: '#fff', borderRadius: '4px' }}
                   placeholder="Min 6 characters"
                   required
