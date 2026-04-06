@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import { Path, Timer, Lightning, Mountains, Fire, TrendUp, MapPin, Trash, Calendar, Trophy, Medal } from '@phosphor-icons/react';
 
-const API = import.meta.env.VITE_BACKEND_URL;
+const API = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 function formatPace(pace) {
   if (!pace || pace === 0) return '--:--';

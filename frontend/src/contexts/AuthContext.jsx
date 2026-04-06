@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 import axios from 'axios';
 
 const AuthContext = createContext(null);
-const API = import.meta.env.VITE_BACKEND_URL;
+const API = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);

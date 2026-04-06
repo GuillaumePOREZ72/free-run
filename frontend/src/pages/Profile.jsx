@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import { User, Barbell, Ruler, FloppyDisk } from '@phosphor-icons/react';
 
-const API = import.meta.env.VITE_BACKEND_URL;
+const API = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 export default function Profile() {
   const { user, refreshUser } = useAuth();

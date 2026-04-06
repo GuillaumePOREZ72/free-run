@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Play, Pause, Stop, Timer, Path, Lightning, Mountains, Fire, Trophy } from '@phosphor-icons/react';
 import 'leaflet/dist/leaflet.css';
 
-const API = import.meta.env.VITE_BACKEND_URL;
+const API = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 const currentIcon = L.divIcon({
   html: '<div style="width:16px;height:16px;background:#00A3FF;border:3px solid #fff;border-radius:50%;box-shadow:0 0 12px #00A3FF;"></div>',

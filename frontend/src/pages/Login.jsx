@@ -72,7 +72,7 @@ export default function Login() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
+                  className="w-full pl-12 pr-4 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
                   style={{ background: '#0A0A0A', borderColor: '#27272A', color: '#fff', borderRadius: '4px' }}
                   placeholder="you@email.com"
                   required
@@ -89,7 +89,7 @@ export default function Login() {
                   type={showPw ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
+                  className="w-full pl-12 pr-10 py-3 text-sm border outline-none focus:border-[#00A3FF] transition-colors"
                   style={{ background: '#0A0A0A', borderColor: '#27272A', color: '#fff', borderRadius: '4px' }}
                   placeholder="Enter password"
                   required

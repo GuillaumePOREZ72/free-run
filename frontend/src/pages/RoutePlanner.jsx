@@ -6,7 +6,7 @@ import axios from 'axios';
 import { MapPin, Trash, FloppyDisk, ArrowCounterClockwise, Path } from '@phosphor-icons/react';
 import 'leaflet/dist/leaflet.css';
 
-const API = import.meta.env.VITE_BACKEND_URL;
+const API = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 const startIcon = L.divIcon({
   html: '<div style="width:14px;height:14px;background:#00FF88;border:2px solid #0A0A0A;border-radius:50%;"></div>',
