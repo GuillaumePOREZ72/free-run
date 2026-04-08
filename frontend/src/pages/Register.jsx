@@ -39,11 +39,7 @@ export default function Register() {
     }
   };
 
-  const handleGoogle = () => {
-    // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
-    const redirectUrl = window.location.origin + '/dashboard';
-    window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
-  };
+
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center px-4" style={{ background: '#0A0A0A' }}>
@@ -143,21 +139,7 @@ export default function Register() {
             </button>
           </form>
 
-          <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px" style={{ background: '#27272A' }} />
-            <span className="text-xs uppercase tracking-widest" style={{ color: '#A1A1AA' }}>or</span>
-            <div className="flex-1 h-px" style={{ background: '#27272A' }} />
-          </div>
 
-          <button
-            data-testid="google-register-button"
-            onClick={handleGoogle}
-            className="w-full py-3 text-sm font-semibold border cursor-pointer flex items-center justify-center gap-2 transition-colors"
-            style={{ background: 'transparent', borderColor: '#27272A', color: '#fff', borderRadius: '4px' }}
-          >
-            <GoogleLogo size={20} weight="bold" />
-            Continue with Google
-          </button>
 
           <p className="text-center mt-6 text-sm" style={{ color: '#A1A1AA' }}>
             Already have an account?{' '}

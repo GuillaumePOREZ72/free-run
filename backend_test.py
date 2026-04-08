@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 class RunTrackerAPITester:
-    def __init__(self, base_url="https://91c2d789-597e-42a3-aff2-bb06c883e1b5.preview.emergentagent.com"):
+    def __init__(self, base_url="http://localhost:8000"):
         self.base_url = base_url
         self.session = requests.Session()
         self.tests_run = 0

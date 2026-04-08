@@ -249,51 +249,7 @@ async def refresh_token(request: Request, response: Response):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
-# ─── Google OAuth (Emergent Auth) ───
-@app.post("/api/auth/session")
-async def exchange_session(request: Request, response: Response):
-    body = await request.json()
-    session_id = body.get("session_id")
-    if not session_id:
-        raise HTTPException(status_code=400, detail="session_id required")
-    async with httpx.AsyncClient() as client:
-        resp = await client.get(
-            "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data",
-            headers={"X-Session-ID": session_id}
-        )
-    if resp.status_code != 200:
-        raise HTTPException(status_code=401, detail="Invalid session")
-    data = resp.json()
-    email = data["email"].lower()
-    session_token = data["session_token"]
 
-    existing = await db.users.find_one({"email": email}, {"_id": 0})
-    if existing:
-        user_id = existing["user_id"]
-        await db.users.update_one({"email": email}, {"$set": {"name": data.get("name", existing.get("name")), "picture": data.get("picture")}})
-    else:
-        user_id = f"user_{uuid.uuid4().hex[:12]}"
-        await db.users.insert_one({
-            "user_id": user_id,
-            "email": email,
-            "name": data.get("name", ""),
-            "picture": data.get("picture", ""),
-            "role": "user",
-            "weight": 70,
-            "height": 175,
-            "created_at": datetime.now(timezone.utc),
-        })
-
-    await db.user_sessions.insert_one({
-        "user_id": user_id,
-        "session_token": session_token,
-        "expires_at": datetime.now(timezone.utc) + timedelta(days=7),
-        "created_at": datetime.now(timezone.utc),
-    })
-    response.set_cookie(key="session_token", value=session_token, httponly=True, secure=True, samesite="none", max_age=604800, path="/")
-    user = await db.users.find_one({"user_id": user_id}, {"_id": 0})
-    user.pop("password_hash", None)
-    return user
 
 
 # ─── Routes (planned routes) ───
